@@ -1,0 +1,20 @@
+fontpaths = [
+	"C:/Users/a/Desktop/source-han-serif/SourceHanSerif-ExtraLight.ttf",
+	"C:/Users/a/Desktop/source-han-serif/SourceHanSerif-Heavy.ttf",
+	"C:/Users/a/Desktop/source-han-serif/SourceHanSerif-Light.ttf",
+	"C:/Users/a/Desktop/source-han-serif/SourceHanSerif-Medium.ttf"
+]
+
+for fontpath in fontpaths:
+  f = fontforge.open(fontpath)
+  gs = f.selection.select(("unicode", "ranges"), 0x21, 0x7e)
+  ryMin = 0
+  ryMax = 0
+  for g in gs.byGlyphs:
+    (xmin, ymin, xmax, ymax) = g.boundingBox()
+    if ymin < ryMin:
+      ryMin = ymin
+    if ryMax < ymax:
+      ryMax = ymax
+  print("{0}\t{1}\t{2}".format(f.fontname, ryMax, ryMin))
+  f.close()
